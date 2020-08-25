@@ -46,9 +46,7 @@
 | --------- | ---------- | ------------------------------ |
 | user      | references | null: false, foreign key: true |
 | item      | references | null: false, foreign key: true |
-| shipping  | integer    | null: false                    |
-| payment   | integer    | null: false                    |
-| paid      | boolean    | null: false                    |
+
 
 ### Association
 
