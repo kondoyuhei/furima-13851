@@ -32,7 +32,7 @@
 | charge    | integer    | null: false                    |
 | from      | integer    | null: false                    |
 | period    | integer    | null: false                    |
-| sale      | boolean    | null: false                    |
+
 
 ### Association
 
