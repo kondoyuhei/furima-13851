@@ -1,24 +1,91 @@
-# README
+# テーブル設計
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## users テーブル
 
-Things you may want to cover:
+| Column   | Type   | Options     |
+| -------- | ------ | ----------- |
+| nickname | string | null: false |
+| email    | string | null: false |
+| password | string | null: false |
+| name_sei | string | null: false |
+| name_mei | string | null: false |
+| yomi_sei | string | null: false |
+| yomi_mei | string | null: false |
+| birthday | date   | null: false |
 
-* Ruby version
+### Association
 
-* System dependencies
+- has_many :items
+- has_many :purchases
 
-* Configuration
+## items テーブル
 
-* Database creation
+| Column    | Type       | Options                        |
+| --------- | ---------- | ------------------------------ |
+| name      | string     | null: false                    |
+| note      | text       | null: false                    |
+| price     | integer    | null: false                    |
+| image     | string     | null: false                    |
+| user      | references | null: false, foreign_key: true |
+| category  | integer    | null: false                    |
+| condition | integer    | null: false                    |
+| charge    | integer    | null: false                    |
+| from      | integer    | null: false                    |
+| period    | integer    | null: false                    |
+| sale      | boolean    | null: false                    |
 
-* Database initialization
+### Association
 
-* How to run the test suite
+- belongs_to :user
+- has_one :purchase
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+## purchases テーブル
 
-* ...
+| Column    | Type       | Options                        |
+| --------- | ---------- | ------------------------------ |
+| user      | references | null: false, foreign key: true |
+| item      | references | null: false, foreign key: true |
+| shipping  | integer    | null: false                    |
+| payment   | integer    | null: false                    |
+| paid      | boolean    | null: false                    |
+
+### Association
+
+- belongs_to :user
+- belongs_to :item
+- has_one :shipping
+- has_one :payment
+
+
+## shippings テーブル
+
+| Column     | Type       | Options                        |
+| ---------- | ---------- | ------------------------------ |
+| puchase    | references | null: false, foreign_key: true |
+| zip        | string     | null: false                    |
+| prefecture | integer    | null: false                    |
+| city       | string     | null: false                    |
+| address    | string     | null: false                    |
+| phone      | string     | null: false                    |
+
+
+### Association
+
+- belongs_to :purchase
+
+
+## payments テーブル
+
+| Column  | Type       | Options                        |
+| ------- | ---------- | ------------------------------ |
+| puchase | references | null: false, foreign_key: true |
+| amount  | integer    | null: false                    |
+
+
+### Association
+
+- belongs_to :purchase
+
+
+
