@@ -73,17 +73,4 @@
 - belongs_to :purchase
 
 
-## payments テーブル
-
-| Column  | Type       | Options                        |
-| ------- | ---------- | ------------------------------ |
-| puchase | references | null: false, foreign_key: true |
-| amount  | integer    | null: false                    |
-
-
-### Association
-
-- belongs_to :purchase
-
-
 
