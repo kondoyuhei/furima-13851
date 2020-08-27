@@ -1,4 +1,7 @@
 class ItemsController < ApplicationController
+  # ログイン確認をする
+  before_action :authenticate_user!, except: [:index]
+
   def index
   end
 
