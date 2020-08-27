@@ -1,20 +1,5 @@
 require 'faker/japanese'
 
-# FactoryBot.define do
-#   factory :user do
-#     nickname {"testing"}
-#     name_sei {"アイ"}
-#     name_mei {"ウエオ"}
-#     yomi_sei {"アイ"}
-#     yomi_mei {"ウエオ"}
-#     email {"abc@defe.com"}
-#     password = "password1"
-#     password {password}
-#     password_confirmation {password}
-#     birthday {"2020-08-27"}
-#   end
-# end
-
 FactoryBot.define do
   factory :user do
     nickname {Faker::Name.name}
