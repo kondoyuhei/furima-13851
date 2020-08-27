@@ -88,7 +88,7 @@ RSpec.describe User, type: :model do
     it "「@」のないメールは登録できない" do
       @user.email = "abcatdef.com"
       @user.valid?
-      expect(@user.errors.full_messages).to include("Email is invalid. Email must include '@'. ")
+      expect(@user.errors.full_messages).to include("Email is invalid")
     end
 
     it "「姓」は全角で入力しなければならない" do
