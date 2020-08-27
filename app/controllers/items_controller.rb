@@ -12,6 +12,9 @@ class ItemsController < ApplicationController
   end
 
   def create
+    @item = Item.new(item_params)
+    @item.save
+    redirect_to :index
   end
 
   def edit
@@ -22,4 +25,11 @@ class ItemsController < ApplicationController
 
   def destroy
   end
+
+  private
+
+  def item_params
+    params.require(:item).permit(:name, :note, :price, :image, :category, :condition, :charge, :from, :period).merge(user_id: current_user.id)
+  end
+
 end
