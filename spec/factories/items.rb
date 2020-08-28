@@ -1,7 +1,6 @@
-require 'faker/japanese'
-
 FactoryBot.define do
   factory :item do
+    association :user
     name {Faker::Book.title}
     note {Faker::Lorem.sentence}
     price {rand(300..9999999)}
@@ -10,7 +9,6 @@ FactoryBot.define do
     charge {rand(1..4)}
     from {rand(1..47)}
     period {rand(1..3)}
-    association :user
-    image { Rack::Test::UploadedFile.new(File.join(Rails.root, 'public/images/sample.png')) }
+    image { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec/fixtures/files/test.png'), 'image/png') }
   end
 end
