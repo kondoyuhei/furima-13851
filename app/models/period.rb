@@ -1,4 +1,4 @@
-class Period < ApplicationRecord
+class Period < ActiveHash::Base
   # 商品の発送までの日数
   self.data = [
     { id: 1, name: '---' },
