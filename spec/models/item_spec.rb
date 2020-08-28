@@ -1,9 +1,13 @@
 require 'rails_helper'
 
+# Itemのインスタンスを作る際、Userのインスタンスについては
+# 「FactoryBot.create(:user)」（buildでなくcreate）で作るための設定
+FactoryBot.use_parent_strategy = false
+
 RSpec.describe Item, type: :model do
   describe '#create' do
     before do
-      @item = FactoryBot.create(:item)
+      @item = FactoryBot.build(:item)
     end
 
     it "「商品画像」「商品名」「商品説明」「カテゴリー」「商品の状態」「配送料の負担」「発送元の地域」「発送までの日数」「価格」が存在すれば登録できる" do
