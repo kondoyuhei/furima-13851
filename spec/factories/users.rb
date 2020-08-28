@@ -8,7 +8,7 @@ FactoryBot.define do
     yomi_sei {Faker::Japanese::Name.last_name.yomi}
     yomi_mei {Faker::Japanese::Name.first_name.yomi}
     email {Faker::Internet.free_email}
-    password = Faker::Internet.password(min_length: 6)
+    password = "a1" + Faker::Internet.password(min_length: 4)
     password {password}
     password_confirmation {password}
     birthday {Faker::Date.birthday}
