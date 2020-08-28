@@ -1,18 +1,19 @@
 class Item < ApplicationRecord
   belongs_to :user
   has_one :purchase
+  
   has_one_attached :image
 
-  with_option presence: true do
-    validates :name     # 商品名
-    validates :note     # 商品説明
-    validates :price    # 商品価格
+  with_options presence: true do
+    validates :name,      { length: {maximum: 40} }      # 商品名
+    validates :note,      { length: {maximum: 1000} }# 商品説明
+    validates :price,     numericality: { only_integer: true, greater_than_or_equal_to: 300, less_than_or_equal_to: 9999999, message: "is out of setting range"}  # 商品価格
     validates :image    # 商品画像
     validates :user_id  # 出品者
-    validates :category # カテゴリー
-    validates :conditon # 状態
-    validates :charge   # 送料負担
-    validates :from     # 発送元
-    validates :period   # 出荷日数
+    validates :category,  numericality: { other_than: 0, message: "can't be blank"}  # カテゴリー
+    validates :condition, numericality: { other_than: 0, message: "can't be blank"}  # 状態
+    validates :charge,    numericality: { other_than: 0, message: "can't be blank"}  # 送料負担
+    validates :from,      numericality: { other_than: 0, message: "can't be blank"}  # 発送元
+    validates :period,    numericality: { other_than: 0, message: "can't be blank"}  # 出荷日数
   end
 end
