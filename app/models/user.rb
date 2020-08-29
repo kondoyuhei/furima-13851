@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  
+
   with_options presence: true do
     # 正規表現の条件指定
     format_zenkaku  = /\A[ぁ-んァ-ン一-龥]/ # 全角（全角ひらがな・全角カタカナ・漢字）
