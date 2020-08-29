@@ -114,7 +114,5 @@ RSpec.describe User, type: :model do
       @user.valid?
       expect(@user.errors.full_messages).to include("Yomi mei is invalid. Input full-width Katakanas.")
     end
-
-
   end
 end
