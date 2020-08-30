@@ -5,10 +5,10 @@ class ItemsController < ApplicationController
 
   def confirm_user
     @item = Item.find(params[:id])
-    if @item.user_id != current_user.id
-      flash[:notice] = "権限がありません"
-      redirect_to root_path
-    end
+    return unless @item.user_id != current_user.id
+
+    flash[:notice] = "権限がありません"
+    redirect_to root_path
   end
 
   def index

@@ -25,21 +25,16 @@ class Item < ApplicationRecord
   # 商品が販売中かどうか判定するメソッド
   # 商品が販売中であればtrue, 購入済みであればfalseを返す
   def on_sale
-    if Purchase.where(item_id: self.id).empty?
-      return true
-    else
-      return false
-    end
+    return true if Purchase.where(item_id: id).empty?
+
+    false
   end
 
   # 引数としてユーザーを渡すと、その商品の出品者かどうか判定するメソッド
   # 出品者であればtrue,出品者でなければfalseを返す
   def owner(target)
-    if self.user_id == target.id
-      return true
-    else
-      return false
-    end
-  end
+    return true if user_id == target.id
 
+    false
+  end
 end
