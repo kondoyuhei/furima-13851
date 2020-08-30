@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
   before_action :confirm_user, only: [:edit, :update, :destroy]
 
   def confirm_user
-    @item = Item.find_by(params[:id])
+    @item = Item.find(params[:id])
     if @item.user_id != current_user.id
       flash[:notice] = "権限がありません"
       redirect_to root_path
@@ -26,6 +26,7 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     if @item.save
+      flash[:notice] = "商品を出品しました"
       redirect_to item_path(@item.id)
     else
       render :new
@@ -38,7 +39,8 @@ class ItemsController < ApplicationController
 
   def update
     @item = Item.find(params[:id])
-    if @item.update(tweet_params)
+    if @item.update(item_params)
+      flash[:notice] = "商品の情報を更新しました"
       redirect_to item_path(@item.id)
     else
       render :edit
