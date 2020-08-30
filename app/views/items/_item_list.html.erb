@@ -1,14 +1,14 @@
 <li class='list'>
-  <%= link_to "#" do %>
+  <%= link_to item_path(item.id) do %>
     <%# ********** 商品画像 ********** %>
     <div class='item-img-content'>
-      <%= image_tag item.image.variant(resize:'281x281'), class: "item-img" %>
+      <%= image_tag item.image, class: "item-img" %>
       <%# *****商品が売れていればsold outの表示をする***** %>
-        <% if @purchases.exists?(item_id: item.id) %>
-          <div class='sold-out'>
-            <span>Sold Out!!</span>
-          </div>
-        <% end %>
+      <% if !item.on_sale %>
+        <div class='sold-out'>
+          <span>Sold Out!!</span>
+        </div>
+      <% end %>
     </div>
     <%# ********** 商品情報 ********** %>
     <div class='item-info'>
@@ -16,7 +16,7 @@
         <%= item.name %>
       </h3>
       <div class='item-price'>
-        <span><%= item.price %>円<br>(税込み)</span>
+        <span><%= item.price.to_s(:delimited) %>円<br>(税込み)</span>
         <div class='star-btn'>
           <%= image_tag "star.png", class:"star-icon" %>
           <span class='star-count'>0</span>

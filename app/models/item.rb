@@ -21,4 +21,25 @@ class Item < ApplicationRecord
     validates :from,      numericality: { other_than: 0, message: "can't be blank" } # 発送元
     validates :period,    numericality: { other_than: 0, message: "can't be blank" } # 出荷日数
   end
+
+  # 商品が販売中かどうか判定するメソッド
+  # 商品が販売中であればtrue, 購入済みであればfalseを返す
+  def on_sale
+    if Purchase.where(item_id: self.id).empty?
+      return true
+    else
+      return false
+    end
+  end
+
+  # 引数としてユーザーを渡すと、その商品の出品者かどうか判定するメソッド
+  # 出品者であればtrue,出品者でなければfalseを返す
+  def owner(target)
+    if self.user_id == target.id
+      return true
+    else
+      return false
+    end
+  end
+
 end

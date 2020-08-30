@@ -1,13 +1,13 @@
 class ItemsController < ApplicationController
   # ログイン確認をする
-  before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @items = Item.includes(:user).order(created_at: "DESC")
-    @purchases = Purchase.all
+    @items = Item.includes(:user).order(created_at: :DESC)
   end
 
   def show
+    @item = Item.includes(:user).find(params[:id])
   end
 
   def new
@@ -17,7 +17,7 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     if @item.save
-      redirect_to root_path
+      redirect_to item_path(@item.id)
     else
       render :new
     end
