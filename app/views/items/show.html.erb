@@ -26,18 +26,18 @@
     </div>
 
     <%# ログインしているユーザと出品しているユーザが同一人物である時、商品の編集と削除を表示にしましょう%>
-    <% if user_signed_in? %>
-      <% if @item.user_id == current_user.id %>
-        <%= link_to '商品の編集', "#", method: :get, class: "item-red-btn" %>
-        <p class='or-text'>or</p>
-        <%= link_to '削除', "#", method: :delete, class:'item-destroy' %>
-      <% end %>
-      <%# 商品が売れていない場合はこちらを表示しましょう %>
-      <% if @purchases.where(item_id: @item.id).empty? && @item.user_id != current_user.id %>
-        <%= link_to '購入画面に進む', "#" ,class:"item-red-btn"%>
-      <% end %>
-      <%# //商品が売れていない場合はこちらを表示しましょう %>
+    <%# 「ログイン中」かつ「出品者がログイン中のユーザーと同じである」 %>
+    <% if user_signed_in? && @item.owner(current_user) %>
+      <%= link_to '商品の編集', "#", method: :get, class: "item-red-btn" %>
+      <p class='or-text'>or</p>
+      <%= link_to '削除', "#", method: :delete, class:'item-destroy' %>
     <% end %>
+    <%# 商品が売れていない場合はこちらを表示しましょう %>
+    <%# 「ログイン中」かつ「商品が販売中である」かつ「出品者がログイン中のユーザーではない」 %>
+    <% if user_signed_in? && @item.on_sale && !@item.owner(current_user) %>
+      <%= link_to '購入画面に進む', "#" ,class:"item-red-btn"%>
+    <% end %>
+      <%# //商品が売れていない場合はこちらを表示しましょう %>
 
     <%# // ログインしているユーザと出品しているユーザが同一人物である時、商品の編集と削除を表示にしましょう %>
 
@@ -100,10 +100,10 @@
     </form>
   </div>
   <div class="links">
-    <% if @item.id < @items.length %>
+    <% if Item.exists?(id: @item.id + 1) %>
       <%= link_to "＜ 前の商品", item_path(@item.id + 1), class:"change-item-btn" %>
     <% end %>
-    <% if @item.id > 1 %>
+    <% if @item.id - 1 > 0 %>
       <%= link_to "後ろの商品 ＞", item_path(@item.id - 1), class:"change-item-btn" %>
     <% end %>
   </div>

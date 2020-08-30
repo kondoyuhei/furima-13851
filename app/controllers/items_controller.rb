@@ -3,13 +3,12 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @items = Item.includes(:user).order(created_at: "DESC")
+    @items = Item.includes(:user).order(created_at: :DESC)
     @purchases = Purchase.all
   end
 
   def show
-    @items = Item.includes(:user)
-    @item = @items.find(params[:id])
+    @item = Item.includes(:user).find(params[:id])
     @purchases = Purchase.all
   end
 
