@@ -4,12 +4,10 @@ class ItemsController < ApplicationController
 
   def index
     @items = Item.includes(:user).order(created_at: :DESC)
-    @purchases = Purchase.all
   end
 
   def show
     @item = Item.includes(:user).find(params[:id])
-    @purchases = Purchase.all
   end
 
   def new

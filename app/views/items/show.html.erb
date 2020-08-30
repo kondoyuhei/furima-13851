@@ -9,7 +9,7 @@
     <div class='item-img-content'>
       <%= image_tag @item.image ,class:"item-box-img" %>
       <%# 商品が売れている場合は、sold outの表示をしましょう。 %>
-      <% if @purchases.exists?(item_id: @item.id) %>
+      <% if !@item.on_sale %>
         <div class='sold-out'>
           <span>Sold Out!!</span>
         </div>
