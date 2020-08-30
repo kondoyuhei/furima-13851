@@ -4,19 +4,21 @@
 <div class="item-show">
   <div class="item-box">
     <h2 class="name">
-      <%= "商品名" %>
+      <%= @item.name %>
     </h2>
     <div class='item-img-content'>
-      <%= image_tag "item-sample.png" ,class:"item-box-img" %>
+      <%= image_tag @item.image ,class:"item-box-img" %>
       <%# 商品が売れている場合は、sold outの表示をしましょう。 %>
-      <div class='sold-out'>
-        <span>Sold Out!!</span>
-      </div>
+      <% if @purchases.exists?(item_id: @item.id) %>
+        <div class='sold-out'>
+          <span>Sold Out!!</span>
+        </div>
+      <% end %>
       <%# //商品が売れている場合は、sold outの表示をしましょう。 %>
     </div>
     <div class="item-price-box">
       <span class="item-price">
-        ¥ 999,999,999
+        ¥ <%= @item.price.to_s(:delimited) %>
       </span>
       <span class="item-postage">
         (税込) 送料込み
@@ -24,14 +26,18 @@
     </div>
 
     <%# ログインしているユーザと出品しているユーザが同一人物である時、商品の編集と削除を表示にしましょう%>
-
-    <%= link_to '商品の編集', "#", method: :get, class: "item-red-btn" %>
-    <p class='or-text'>or</p>
-    <%= link_to '削除', "#", method: :delete, class:'item-destroy' %>
-
-    <%# 商品が売れていない場合はこちらを表示しましょう %>
-    <%= link_to '購入画面に進む', "#" ,class:"item-red-btn"%>
-    <%# //商品が売れていない場合はこちらを表示しましょう %>
+    <% if user_signed_in? %>
+      <% if @item.user_id == current_user.id %>
+        <%= link_to '商品の編集', "#", method: :get, class: "item-red-btn" %>
+        <p class='or-text'>or</p>
+        <%= link_to '削除', "#", method: :delete, class:'item-destroy' %>
+      <% end %>
+      <%# 商品が売れていない場合はこちらを表示しましょう %>
+      <% if @purchases.where(item_id: @item.id).empty? && @item.user_id != current_user.id %>
+        <%= link_to '購入画面に進む', "#" ,class:"item-red-btn"%>
+      <% end %>
+      <%# //商品が売れていない場合はこちらを表示しましょう %>
+    <% end %>
 
     <%# // ログインしているユーザと出品しているユーザが同一人物である時、商品の編集と削除を表示にしましょう %>
 
@@ -42,27 +48,27 @@
       <tbody>
         <tr>
           <th class="detail-item">出品者</th>
-          <td class="detail-value"><%= "出品者名" %></td>
+          <td class="detail-value"><%= @item.user.nickname %></td>
         </tr>
         <tr>
           <th class="detail-item">カテゴリー</th>
-          <td class="detail-value"><%= "カテゴリー名" %></td>
+          <td class="detail-value"><%= Category.find(@item.category).name %></td>
         </tr>
         <tr>
           <th class="detail-item">商品の状態</th>
-          <td class="detail-value"><%= "商品の状態" %></td>
+          <td class="detail-value"><%= Condition.find(@item.condition).name %></td>
         </tr>
         <tr>
           <th class="detail-item">配送料の負担</th>
-          <td class="detail-value"><%= "発送料の負担" %></td>
+          <td class="detail-value"><%= Charge.find(@item.charge).name %></td>
         </tr>
         <tr>
           <th class="detail-item">発送元の地域</th>
-          <td class="detail-value"><%= "発送元の地域" %></td>
+          <td class="detail-value"><%= Prefecture.find(@item.from).name %></td>
         </tr>
         <tr>
           <th class="detail-item">発送日の目安</th>
-          <td class="detail-value"><%= "発送日の目安" %></td>
+          <td class="detail-value"><%= Period.find(@item.period).name %></td>
         </tr>
       </tbody>
     </table>
@@ -94,14 +100,16 @@
     </form>
   </div>
   <div class="links">
-    <a href="#" class="change-item-btn">
-      ＜ 前の商品
-    </a>
-    <a href="#" class="change-item-btn">
-      後ろの商品 ＞
-    </a>
+    <% if @item.id < @items.length %>
+      <%= link_to "＜ 前の商品", item_path(@item.id + 1), class:"change-item-btn" %>
+    <% end %>
+    <% if @item.id > 1 %>
+      <%= link_to "後ろの商品 ＞", item_path(@item.id - 1), class:"change-item-btn" %>
+    <% end %>
   </div>
-  <a href="#" class='another-item'><%= "商品のカテゴリー名" %>をもっと見る</a>
+
+  <%= link_to "#{Category.find(@item.category).name}をもっと見る", "/#", class:'another-item' %>
+
 </div>
 
-<%= render "shared/footer" %>
+<%# render "shared/footer" %>
