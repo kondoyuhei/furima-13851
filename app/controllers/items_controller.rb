@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   # ログイン確認をする
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_item, only: [:show, :edit]
+  before_action :set_item, only: [:show, :edit, :update]
   before_action :confirm_user, only: [:edit, :update, :destroy]
 
   def confirm_user
