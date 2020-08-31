@@ -1,12 +1,12 @@
 class ItemsController < ApplicationController
   # ログイン確認をする
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_item, only: [:show, :edit, :update]
   before_action :confirm_user, only: [:edit, :update, :destroy]
+  before_action :set_item, only: [:show, :edit, :update, :destroy]
 
   def confirm_user
     @item = Item.find(params[:id])
-    return unless @item.user_id != current_user.id
+    return if @item.user_id == current_user.id
 
     flash[:notice] = "権限がありません"
     redirect_to root_path
@@ -50,6 +50,13 @@ class ItemsController < ApplicationController
   end
 
   def destroy
+    if @item.destroy
+      flash[:notice] = "商品を削除しました"
+      redirect_to root_path
+    else
+      flash[:notice] = "商品を削除できません"
+      redirect_to item_path(@item.id)
+    end
   end
 
   private
