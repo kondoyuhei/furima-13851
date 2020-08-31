@@ -1,6 +1,6 @@
 const pay = () => {
   // PAY.JPテスト公開鍵
-  Payjp.setPublicKey("pk_test_XXXXXXXX");
+  Payjp.setPublicKey("pk_test_a1edc5754818c5c9732b20d7");
 
   // フォームを取得する
   const form = document.getElementById("charge-form");
@@ -27,7 +27,7 @@ const pay = () => {
     Payjp.createToken(card, (status, response) => {
       // トークンが正常に作成されたら処理を続ける
       if (status === 200) {
-        // レスポンスとしてトークンを取得
+        // レスポンスとして得たデータからトークンを取得
         const token = response.id;
         
         // トークンを含む隠し要素（HTML）を生成する
@@ -45,16 +45,10 @@ const pay = () => {
 
         // フォームを送信する
         document.getElementById("charge-form").submit();
-
-        /* ############################################################
-        この部分はコードレビュー前に対処する
-        フォーム入力値のリセットはいらないかもしれないが、念のために残しておく
-
-        // フォームの入力値をリセットする
-        document.getElementById("charge-form").reset();
-        ############################################################ */
-
       } else {
+        // メッセージを表示する
+        const retry_message = "<p>決済できません</p>" ;
+        renderDom.insertAdjacentHTML("afterbegin", retry_message);        
       }
     });
   });

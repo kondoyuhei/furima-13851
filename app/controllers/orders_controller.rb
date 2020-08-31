@@ -28,6 +28,7 @@ class OrdersController < ApplicationController
   def create
     @order = PurchaseShipping.new(purchase_params)
     if @order.valid?
+      pay_item
       @order.save
       flash[:notice] = "商品を購入しました"
       redirect_to root_path
@@ -40,9 +41,17 @@ class OrdersController < ApplicationController
 
   def purchase_params
     params.permit(:purchase_shipping).permit(
-      :item_id,
-      :purchase_id, :zip, :prefecture, :city,
+      :token, :purchase_id, :zip, :prefecture, :city,
       :address, :building, :phone,
-    ).merge(user_id: current_user.id)
+    ).merge(user_id: current_user.id, item_id: params[:item_id])
+  end
+
+  def pay_item
+    Payjp.api_key = "sk_test_39407efff624d99a308f69de"  # PAY.JPテスト秘密鍵
+    Payjp::Charge.create(
+      amount: order_params[:price],  # 商品の値段
+      card: order_params[:token],    # カードトークン
+      currency:'jpy'                 # 通貨の種類(日本円)
+    )
   end
 end
