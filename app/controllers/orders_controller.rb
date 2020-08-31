@@ -1,11 +1,12 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_item_and_user, only: [:index, :create]
   before_action :item_available, only: [:index, :create]
-  before_action :confirm_seller, only: [:index]
+  before_action :confirm_seller, only: [:index, :create]
 
   def item_available
     @item = Item.find(params[:item_id])
-    return if @item.on_onsale
+    return if @item.on_sale
 
     # 売り切れであればトップページに遷移する
     flash[:notice] = "この商品は売り切れです。購入できません。"
@@ -21,19 +22,21 @@ class OrdersController < ApplicationController
     redirect_to root_path
   end
 
-  def index
+  def set_item_and_user
     @item = Item.find(params[:item_id])
+    @user = current_user
+  end
+
+  def index
   end
 
   def create
-    @item = Item.find(params[:item_id])
-    @user = current_user
-    @order = Purchase.()
+    @order = Purchase.new(order_params)
   end
 
   private
 
   def order_params
-    params.require(:purchase).permit(:item).merge(user_id: current_user.id)
+    params.require(:purchase).permit(:item).merge(user: current_user)
   end
 end
