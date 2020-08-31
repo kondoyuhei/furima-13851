@@ -5,11 +5,10 @@
   </header>
   <div class="items-sell-main">
     <h2 class="items-sell-title">商品の情報を入力</h2>
-    <%= form_with model: @item, url: items_path(@item), local: true do |f| %>
+    <%= form_with model: @item, local: true do |f| %>
 
-    <%# インスタンスを渡して、エラー発生時にメッセージが表示されるようにしましょう。%>
+    <%# エラーメッセージ %>
     <%= render 'shared/error_messages', model: f.object %>
-    <%# //インスタンスを渡して、エラー発生時にメッセージが表示されるようにしましょう。%>
 
     <%# 出品画像 %>
     <div class="img-upload">
@@ -50,12 +49,12 @@
           カテゴリー
           <span class="indispensable">必須</span>
         </div>
-        <%= f.collection_select(:category, Category.all, :id, :name, {include_blank: "---"}, {class:"select-box", id:"item-category", required: true}) %>
+        <%= f.collection_select(:category, Category.all, :id, :name, { include_blank: "---" }, {class:"select-box", id:"item-category", required: true }) %>
         <div class="weight-bold-text">
           商品の状態
           <span class="indispensable">必須</span>
         </div>
-        <%= f.collection_select(:condition, Condition.all, :id, :name, {include_blank: "---"}, {class:"select-box", id:"item-sales-status", required: true}) %>
+        <%= f.collection_select(:condition, Condition.all, :id, :name, { include_blank: "---" }, {class:"select-box", id:"item-sales-status", required: true }) %>
       </div>
     </div>
     <%# /商品の詳細 %>
@@ -71,17 +70,17 @@
           配送料の負担
           <span class="indispensable">必須</span>
         </div>
-        <%= f.collection_select(:charge, Charge.all, :id, :name, {include_blank: "---"}, {class:"select-box", id:"item-shipping-fee-status", required: true}) %>
+        <%= f.collection_select(:charge, Charge.all, :id, :name, { include_blank: "---" }, {class:"select-box", id:"item-shipping-fee-status", required: true }) %>
         <div class="weight-bold-text">
           発送元の地域
           <span class="indispensable">必須</span>
         </div>
-        <%= f.collection_select(:from, Prefecture.all, :id, :name, {include_blank: "---"}, {class:"select-box", id:"item-prefecture", required: true}) %>
+        <%= f.collection_select(:from, Prefecture.all, :id, :name, { include_blank: "---" }, {class:"select-box", id:"item-prefecture", required: true }) %>
         <div class="weight-bold-text">
           発送までの日数
           <span class="indispensable">必須</span>
         </div>
-        <%= f.collection_select(:period, Period.all, :id, :name, {include_blank: "---"}, {class:"select-box", id:"item-scheduled-delivery", required: true}) %>
+        <%= f.collection_select(:period, Period.all, :id, :name, { include_blank: "---" }, {class:"select-box", id:"item-scheduled-delivery", required: true }) %>
       </div>
     </div>
     <%# /配送について %>
