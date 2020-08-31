@@ -28,7 +28,7 @@
     <% if user_signed_in? && @item.owner(current_user) %>
       <%= link_to '商品の編集', edit_item_path(@item.id), method: :get, class: "item-red-btn" %>
       <p class='or-text'>or</p>
-      <%= link_to '削除', "#", method: :delete, class:'item-destroy' %>
+      <%= link_to '削除', item_path(@item), method: :delete, class:'item-destroy' %>
     <% end %>
     <%# 商品が販売中の場合、ログインユーザーに購入リンクを表示する %>
     <% if user_signed_in? && @item.on_sale && !@item.owner(current_user) %>
