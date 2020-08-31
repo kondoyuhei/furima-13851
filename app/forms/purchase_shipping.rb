@@ -5,6 +5,7 @@ class PurchaseShipping
     :purchase_id, :zip, :prefecture, :city,
     :address, :building, :phone
 
+  # バリデーションの記述
   with_options presence: true do
     validates :purchase_id # 購入id
     validates :zip, format: {
