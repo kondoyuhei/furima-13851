@@ -37,6 +37,6 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:purchase).permit(:item).merge(user: current_user)
+    params.permit(:item, ).merge(user: current_user)
   end
 end
