@@ -30,25 +30,29 @@ const pay = () => {
         // レスポンスとして得たデータからトークンを取得
         const token = response.id;
         
-        // トークンを含む隠し要素（HTML）を生成する
-        const tokenObject = `<input value=${token} type="hidden" name='token'>`;
-
-        // フォームの最後に隠し要素を埋め込む
+        // 隠し要素を埋め込む要素「charge-form」を取得する
         const renderDom = document.getElementById("charge-form");
-        renderDom.insertAdjacentHTML("beforeend", tokenObject);
+        
+        // トークンを含む隠し要素タグを作成
+        const tokenObj = `<input value=${token} type="hidden" name='token'>`;
+        
+        // charge-form内の最後に隠しオブジェクトを追記する。
+        renderDom.insertAdjacentHTML("beforeend", tokenObj);
 
         // フォームの入力欄からname属性をクリアして、カード情報を送信しないようにする
-        document.getElementById("number").removeAttribute("name");
-        document.getElementById("cvc").removeAttribute("name");
-        document.getElementById("exp_month").removeAttribute("name");
-        document.getElementById("exp_year").removeAttribute("name");
+        document.getElementById("card-number").removeAttribute("name");
+        document.getElementById("card-cvc").removeAttribute("name");
+        document.getElementById("card-exp-month").removeAttribute("name");
+        document.getElementById("card-exp-year").removeAttribute("name");
 
         // フォームを送信する
         document.getElementById("charge-form").submit();
+
+        // フォームをリセットする
+        document.getElementById("charge-form").reset();
+
       } else {
-        // メッセージを表示する
-        const retry_message = "<p>決済できません</p>" ;
-        renderDom.insertAdjacentHTML("afterbegin", retry_message);        
+
       }
     });
   });
