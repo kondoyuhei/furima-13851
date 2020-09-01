@@ -2,12 +2,11 @@ class PurchaseShipping
 
   include ActiveModel::Model
   attr_accessor :user_id, :item_id,
-    :purchase_id, :zip, :prefecture, :city,
+    :zip, :prefecture, :city,
     :address, :building, :phone
 
   # バリデーションの記述
   with_options presence: true do
-    validates :purchase_id # 購入id
     validates :zip, format: {
       with: /\A[0-9]{3}-[0-9]{4}\z/,
       message: "is invalid. Include hyphen(-)"
@@ -33,7 +32,7 @@ class PurchaseShipping
       prefecture: prefecture,
       city: city,
       address: address,
-      buidling: building,
+      building: building,
       phone: phone
     )
   end

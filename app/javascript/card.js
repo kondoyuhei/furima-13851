@@ -12,8 +12,8 @@ const pay = () => {
     e.preventDefault();
 
     // フォームの入力値を取得する
-    const formResult = document.getElementById("charge-form");
-    const formData = new FormData(formResult);
+    const cardForm = document.getElementById("charge-form");
+    const formData = new FormData(cardForm);
 
     // カード情報を取得して定数cardに代入
     const card = {
@@ -30,14 +30,14 @@ const pay = () => {
         // レスポンスとして得たデータからトークンを取得
         const token = response.id;
         
-        // 隠し要素を埋め込む要素「charge-form」を取得する
-        const renderDom = document.getElementById("charge-form");
+        // // 隠し要素を埋め込む要素「charge-form」を取得する
+        // const cardForm = document.getElementById("charge-form");
         
         // トークンを含む隠し要素タグを作成
         const tokenObj = `<input value=${token} type="hidden" name='token'>`;
         
         // charge-form内の最後に隠しオブジェクトを追記する。
-        renderDom.insertAdjacentHTML("beforeend", tokenObj);
+        cardForm.insertAdjacentHTML("beforeend", tokenObj);
 
         // フォームの入力欄からname属性をクリアして、カード情報を送信しないようにする
         document.getElementById("card-number").removeAttribute("name");
@@ -46,13 +46,17 @@ const pay = () => {
         document.getElementById("card-exp-year").removeAttribute("name");
 
         // フォームを送信する
-        document.getElementById("charge-form").submit();
+        cardForm.submit();
 
         // フォームをリセットする
-        document.getElementById("charge-form").reset();
+        cardForm.reset();
 
-      } else {
+      } else if (status === 200) {
+        // トークンを含む隠し要素タグを作成
+        const retry_message = "<div class="retry-message"><p>カードの情報が正しいかご確認ください。</p></div>";
 
+        // charge-form内の最後に隠しオブジェクトを追記する。
+        renderDom.insertAdjacentHTML("afterbegin", retry_message);
       }
     });
   });

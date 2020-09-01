@@ -26,15 +26,19 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @purchase_shipping = PurchaseShipping.new
-    # @item = Item.find(params[:item_id])
+    @shipping = Shipping.new
   end
 
   def create
-    @purchase_shipping = PurchaseShipping.new(purchase_params.except(:token, :price))
-    if @purchase_shipping.valid?
+    @shipping = Shipping.new(purchase_params.except(:token, :price))
+    if @shipping.valid?
       # 購入情報の保存
-      @purchase_shipping.save
+      Purchase.create(
+        user_id: purchase_params[:user_id],
+        item_id: purchase_params[:item_id]
+      )
+      # 送り先の保存
+      @shipping.save
       # pay.jpに売上情報を送る
       pay_item
       # 成功メッセージとともにトップページに遷移
@@ -43,7 +47,7 @@ class OrdersController < ApplicationController
     else
       render 'orders/index'
     end
-
+    binding.pry
     # ********************うまくできたコード********************
     # purchase = Purchase.new(
     #   user_id: purchase_params[:user_id],
