@@ -1,6 +1,6 @@
 const pay = () => {
   // PAY.JPテスト公開鍵
-  Payjp.setPublicKey("pk_test_a1edc5754818c5c9732b20d7");
+  Payjp.setPublicKey(process.env.PAYJP_PUBLIC_KEY);
 
   // フォームを取得する
   const form = document.getElementById("charge-form");
@@ -30,8 +30,8 @@ const pay = () => {
         // レスポンスとして得たデータからトークンを取得
         const token = response.id;
         
-        // // 隠し要素を埋め込む要素「charge-form」を取得する
-        // const cardForm = document.getElementById("charge-form");
+        // 隠し要素を埋め込む要素「charge-form」を取得する
+        const cardForm = document.getElementById("charge-form");
         
         // トークンを含む隠し要素タグを作成
         const tokenObj = `<input value=${token} type="hidden" name='token'>`;
@@ -51,13 +51,13 @@ const pay = () => {
         // フォームをリセットする
         cardForm.reset();
 
-      } else if (status === 200) {
-        // トークンを含む隠し要素タグを作成
-        const retry_message = "<div class="retry-message"><p>カードの情報が正しいかご確認ください。</p></div>";
-
-        // charge-form内の最後に隠しオブジェクトを追記する。
-        renderDom.insertAdjacentHTML("afterbegin", retry_message);
+      } else {
+        document.getElementById("card-number").value = ""
+        document.getElementById("card-cvc").value = ""
+        document.getElementById("card-exp-month").value = ""
+        document.getElementById("card-exp-year").value = ""
       }
+      return
     });
   });
 };

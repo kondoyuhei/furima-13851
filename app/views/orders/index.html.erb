@@ -73,14 +73,15 @@
     </div>
     <%# /カード情報の入力 %>
 
-    <%# エラーメッセージ %>
-    <%= render 'shared/error_messages', model: @shipping %>
-
     <%# 配送先の入力 %>
     <div class='shipping-address-form'>
       <h1 class='info-input-haedline'>
         配送先入力
       </h1>
+
+      <%# エラーメッセージ %>
+      <%= render 'shared/error_messages', model: @shipping %>
+
       <div class="form-group">
         <div class='form-text-wrap'>
           <label class="form-text">郵便番号</label>
@@ -93,7 +94,9 @@
           <label class="form-text">都道府県</label>
           <span class="indispensable">必須</span>
         </div>
-        <%= f.collection_select(:prefecture, Prefecture.all, :id, :name, { include_blank: "---" }, {value: @shipping.prefecture ,class:"select-box", id:"prefecture", required: true }) %>
+        <%= f.collection_select(:prefecture, Prefecture.all, :id, :name, { include_blank: "---" },
+          {selected: @shipping.prefecture, class:"select-box", id:"prefecture", required: true }
+        ) %>
       </div>
       <div class="form-group">
         <div class='form-text-wrap'>

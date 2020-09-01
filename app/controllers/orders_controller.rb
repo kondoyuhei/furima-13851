@@ -30,18 +30,20 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @shipping = Shipping.new(purchase_params.except(:token, :price))
+    shipping_params = purchase_params.except(:token, :price, :user_id, :item_id)
+    @shipping = Shipping.new(shipping_params)
     if @shipping.valid?
-      # 購入情報の保存
-      Purchase.create(
+      # 購入情報を保存する
+      purchase = Purchase.create(
         user_id: purchase_params[:user_id],
         item_id: purchase_params[:item_id]
       )
-      # 送り先の保存
+      # 購入idを送り先インスタンスに付与して送り先を保存する
+      @shipping.purchase_id = purchase.id
       @shipping.save
       # pay.jpに売上情報を送る
       pay_item
-      # 成功メッセージとともにトップページに遷移
+      # 成功メッセージとともにトップページに遷移する
       flash[:notice] = "カード決済と購入が完了しました。"
       redirect_to root_path
     else
@@ -75,13 +77,12 @@ class OrdersController < ApplicationController
   def purchase_params
     # 購入するアイテム・購入するユーザー・送り先の情報・カード決済トークンを含むストロングパラメーターの設定
     params.permit(
-      :token, :purchase_id, :zip, :prefecture, :city,
-      :address, :building, :phone
+      :token, :zip, :prefecture, :city, :address, :building, :phone
     ).merge(user_id: current_user.id, item_id: @item.id, price: @item.price)
   end
 
   def pay_item
-    Payjp.api_key = "sk_test_39407efff624d99a308f69de"  # PAY.JPテスト秘密鍵
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]  # PAY.JPテスト秘密鍵
     Payjp::Charge.create(
       amount: purchase_params[:price], # 商品の値段
       card:   purchase_params[:token], # カードトークン
