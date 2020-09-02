@@ -51,29 +51,9 @@ class OrdersController < ApplicationController
       flash[:notice] = "カード決済と購入が完了しました。"
       redirect_to root_path
     else
+      flash[:notice] = "カード決済・購入はまだ済んでいません。"
       render 'orders/index'
     end
-
-    # ********************うまくできたコード********************
-    # purchase = Purchase.new(
-    #   user_id: purchase_params[:user_id],
-    #   item_id: purchase_params[:item_id]
-    # )
-    # order_params = purchase_params.except(:token, :price, :user_id)
-    # @shipping = Shipping.new(order_params)
-
-    # if shipping.save 
-    #   # 購入情報を保存する
-    #   purchase.save
-    #   # pay.jpに売上情報を送る
-    #   pay_item
-    #   # 成功メッセージとともにトップページに遷移
-    #   flash[:notice] = "カード決済と購入が完了しました。"
-    #   redirect_to root_path
-    # else
-    #   flash[:notice] = "カード決済と購入はまだ済んでいません。"
-    #
-    # end
   end
 
   private
@@ -86,11 +66,11 @@ class OrdersController < ApplicationController
   end
 
   def pay_item
-    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]  # PAY.JPテスト秘密鍵
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"] # PAY.JPテスト秘密鍵
     Payjp::Charge.create(
       amount: purchase_params[:price], # 商品の値段
-      card:   purchase_params[:token], # カードトークン
-      currency:'jpy'                   # 通貨の種類(日本円)
+      card: purchase_params[:token], # カードトークン
+      currency: 'jpy'                   # 通貨の種類(日本円)
     )
   end
 end
