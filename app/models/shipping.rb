@@ -1,5 +1,6 @@
 class Shipping < ApplicationRecord
   with_options presence: true do
+    validates :purchase_id
     validates :zip, format: {
       with: /\A[0-9]{3}-[0-9]{4}\z/,
       message: "is invalid. Include hyphen(-)"

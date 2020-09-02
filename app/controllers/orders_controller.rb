@@ -26,16 +26,16 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @shipping = Shipping.new
+    # バリデーションできるよう送り先情報にダミーの購入id（purchase_id）に「0」を代入する。
+    # 購入の確定前は購入idが未定のため、送り先情報（@shipping）のバリデーションができない。
+    @shipping = Shipping.new(purchase_id: 0)
   end
 
   def create
     # 送り先情報の保存には不要なパラメーターを削除する
     shipping_params = purchase_params.except(:token, :price, :user_id, :item_id)
-    # 購入の確定前は購入id（purchase_id）が未定のため、送り先情報（@shipping）のバリデーションができない。
-    # バリデーションするために送り先情報にダミーの購入id「0」を代入する。
     @shipping = Shipping.new(shipping_params.merge(purchase_id: 0))
-    # 送り先のバリデーションに問題なければ購入を確定させる。
+    # 送り先のバリデーションが通れば購入を確定させる。
     if @shipping.valid?
       # 購入情報を保存する
       purchase = Purchase.create(
@@ -53,7 +53,7 @@ class OrdersController < ApplicationController
     else
       render 'orders/index'
     end
-    binding.pry
+
     # ********************うまくできたコード********************
     # purchase = Purchase.new(
     #   user_id: purchase_params[:user_id],
