@@ -30,15 +30,19 @@ class OrdersController < ApplicationController
   end
 
   def create
+    # 送り先情報の保存には不要なパラメーターを削除する
     shipping_params = purchase_params.except(:token, :price, :user_id, :item_id)
-    @shipping = Shipping.new(shipping_params)
+    # 購入の確定前は購入id（purchase_id）が未定のため、送り先情報（@shipping）のバリデーションができない。
+    # バリデーションするために送り先情報にダミーの購入id「0」を代入する。
+    @shipping = Shipping.new(shipping_params.merge(purchase_id: 0))
+    # 送り先のバリデーションに問題なければ購入を確定させる。
     if @shipping.valid?
       # 購入情報を保存する
       purchase = Purchase.create(
         user_id: purchase_params[:user_id],
         item_id: purchase_params[:item_id]
       )
-      # 購入idを送り先インスタンスに付与して送り先を保存する
+      # 実際の購入idを送り先情報に設定して保存する
       @shipping.purchase_id = purchase.id
       @shipping.save
       # pay.jpに売上情報を送る
