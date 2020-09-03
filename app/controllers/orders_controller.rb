@@ -33,8 +33,9 @@ class OrdersController < ApplicationController
 
   def create
     # 送り先情報の保存には不要なパラメーターを削除する
-    shipping_params = purchase_params.except(:token, :price, :user_id, :item_id)
+    shipping_params = purchase_params.except(:price, :user_id, :item_id)
     @shipping = Shipping.new(shipping_params.merge(purchase_id: 0))
+    binding.pry
     # 送り先のバリデーションが通れば購入を確定させる。
     if @shipping.valid?
       # 購入情報を保存する
