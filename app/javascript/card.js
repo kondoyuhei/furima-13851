@@ -52,11 +52,6 @@ const pay = () => {
         cardForm.reset();
       } else {
         location.reload();
-        // document.getElementById("card-number").value = ""
-        // document.getElementById("card-cvc").value = ""
-        // document.getElementById("card-exp-month").value = ""
-        // document.getElementById("card-exp-year").value = ""
-        // return
       }
     });
   });
