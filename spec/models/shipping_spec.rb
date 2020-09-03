@@ -6,7 +6,7 @@ RSpec.describe Shipping, type: :model do
       @shipping = FactoryBot.build(:shipping)
     end
 
-    it "「購入id」「郵便番号」「都道府県」「市区町村」「番地」「電話番号」が存在すれば登録できる" do
+    it "「購入id」「郵便番号」「都道府県」「市区町村」「番地」「電話番号」「トークン」が存在すれば登録できる" do
       expect(@shipping).to be_valid
     end
 
@@ -68,6 +68,12 @@ RSpec.describe Shipping, type: :model do
       @shipping.phone = "000-000-0000"
       @shipping.valid?
       expect(@shipping.errors.full_messages).to include("Phone is invalid. Phone should be 10 or 11 digits long.")
+    end
+
+    it "「トークン」が空では登録できない" do
+      @shipping.token = nil
+      @shipping.valid?
+      expect(@shipping.errors.full_messages).to include("Token can't be blank")
     end
   end
 end
