@@ -30,7 +30,6 @@
       <p class='or-text'>or</p>
       <%= link_to '削除', item_path(@item), method: :delete, class:'item-destroy' %>
     <% end %>
-    <%# 商品が販売中の場合、ログインユーザーに購入リンクを表示する %>
     <% if user_signed_in? && @item.on_sale && !@item.owner(current_user) %>
       <%= link_to '購入画面に進む', item_orders_path(@item) ,class:"item-red-btn"%>
     <% end %>
