@@ -51,6 +51,7 @@ const pay = () => {
         // フォームをリセットする
         cardForm.reset();
       } else {
+        alert('カード情報が正しく入力されているかご確認ください。')
         location.reload();
       }
     });
