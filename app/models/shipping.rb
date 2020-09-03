@@ -1,8 +1,12 @@
 class Shipping < ApplicationRecord
   with_options presence: true do
+    # 正規表現の条件指定
+    format_zip = /\A[0-9]{3}-[0-9]{4}\z/
+    format_phone = /\A[0-9]{10,11}\z/
+    # バリデーション設定
     validates :purchase_id # 購入id
     validates :zip, format: {
-      with: /\A[0-9]{3}-[0-9]{4}\z/,
+      with: zip_code,
       message: "is invalid. Include hyphen(-)"
     }                      # 郵便番号
     validates :prefecture, numericality: {
