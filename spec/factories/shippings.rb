@@ -6,6 +6,6 @@ FactoryBot.define do
     city { Faker::Address.city } # 市区町村
     address { Faker::Address.street_address } # 番地
     phone { "0" + rand(1..999_999_999).to_s.center(9, '0') } # 電話番号
-    token { "tok_" + rand(1..9_999_999_999_999_999_999_999_999_999).to_s.center(28, '0')  }
+    token { "tok_" + rand(1..9_999_999_999_999_999_999_999_999_999).to_s.center(28, '0') }
   end
 end
